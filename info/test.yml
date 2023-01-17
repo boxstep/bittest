@@ -1,0 +1,20 @@
+---
+- name: Check if BDF is installed
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Check
+    stat:
+      path: "/opt/bitdefender-security-tools/bin/bdconfigure"
+    register: file_data
+
+  - name: Report if file exists
+    debug:
+      msg: "The file or directory exists"
+    when: file_data.stat.exists
+
+  - name: Report a missing file
+    debug:
+      msg: "The file or directory doesnt exist"
+    when: not file_data.stat.exists
